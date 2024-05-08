@@ -1,38 +1,51 @@
 import React from "react";
 import {
-  View,
   Text,
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
+  View,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Icon } from "react-native-elements";
+import BottomSheet from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const ExploreDetail = ({ route }) => {
   const { location } = route.params;
   const navigation = useNavigation();
 
+  // ref for bottom sheet
+  const bottomSheetRef = React.useRef(null);
+
   return (
-    <ImageBackground
-      source={{ uri: location.uri }}
-      style={styles.backgroundImage}
-    >
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.goBack()}
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ImageBackground
+        source={{ uri: location.uri }}
+        style={styles.backgroundImage}
       >
-        <Icon name="arrow-back" type="ionicon" size={24} color="#FFFFFF" />
-      </TouchableOpacity>
-      <View style={styles.container}>
-        <Text style={styles.name}>{location.name}</Text>
-        <Text style={styles.location}>{location.location}</Text>
-        <Text style={styles.rating}>Rating: {location.rating}</Text>
-        <Text style={styles.features}>
-          Features: {location.features.join(", ")}
-        </Text>
-      </View>
-    </ImageBackground>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Icon name="arrow-back" type="ionicon" size={24} color="#FFFFFF" />
+        </TouchableOpacity>
+        <BottomSheet
+          ref={bottomSheetRef}
+          index={1}
+          snapPoints={["100%", "50%"]}
+        >
+          <View style={styles.container}>
+            <Text style={styles.name}>{location.name}</Text>
+            <Text style={styles.location}>{location.location}</Text>
+            <Text style={styles.rating}>Rating: {location.rating}</Text>
+            <Text style={styles.features}>
+              Features: {location.features.join(", ")}
+            </Text>
+          </View>
+        </BottomSheet>
+      </ImageBackground>
+    </GestureHandlerRootView>
   );
 };
 
@@ -41,7 +54,8 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     justifyContent: "flex-end",
-    padding: 20,
+    // padding: 20,
+    height: "50%",
   },
   container: {
     backgroundColor: "rgba(255, 255, 255, 0.8)",

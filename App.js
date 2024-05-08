@@ -13,7 +13,7 @@ export default function App() {
     <NavigationContainer>
       <SafeAreaProvider>
         <Stack.Navigator
-          initialRouteName="Home"
+          initialRouteName="Login"
           screenOptions={{ headerShown: false }}
         >
           {/* <Stack.Screen name="Map" component={MapScreen} /> */}
